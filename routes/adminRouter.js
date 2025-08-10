@@ -112,10 +112,10 @@ router.post("/course", adminMiddle, async(req,res)=>{
     })
 });
 
-router.put("/course", adminMiddle, async(req,res)=>{
+router.put("/course/edit", adminMiddle, async(req,res)=>{
     const adminId=req.adminId;
     let {title,description,price,imageUrl,courseid}=req.body;
-    const course=await courseModel.updateOne({ _id:courseid,createdBy:adminId},
+    const course=await courseModel.updateOne({ _id: courseid,createdBy: adminId},
     {
        title:title,
        description: description,
