@@ -3,6 +3,10 @@ const bcrypt = require("bcrypt");
 const adminSchema = require("../models/admin");
 const mongo = require("../config/mongoose-connction");
 const router = express.Router({ mergeParams: true });
+require('dotenv').config();
+const jwt=require("jsonwebtoken");
+const adminMiddle=require("../middlewares/adminMiddle");
+const courseModel=require("../models/course")
 
 // SIGNUP ROUTES (Registration)
 router.get("/signup", (req, res) => {
@@ -73,7 +77,7 @@ router.post("/signin", async (req, res) => {
             //     }
             // });
 
-            const token = jwt.sign({email},"adminsecret");
+            const token = jwt.sign({id:admin._id},process.env.JWT_ADMIN_SECRET);
                         res.status(200).json({
                             token:token
                         });
@@ -91,6 +95,45 @@ router.post("/signin", async (req, res) => {
             message: "Server error during signin"
         });
     }
+});
+
+router.post("/course", adminMiddle, async(req,res)=>{
+    const adminId=req.adminId;
+    let {title,description,price,imageUrl}=req.body;
+    const course=await courseModel.create({
+       title,
+       description,
+       price,
+       imageUrl,
+       createdBy:adminId
+    });
+    res.json({
+        message:"course created successfully"
+    })
+});
+
+router.put("/course", adminMiddle, async(req,res)=>{
+    const adminId=req.adminId;
+    let {title,description,price,imageUrl,courseid}=req.body;
+    const course=await courseModel.updateOne({ _id:courseid,createdBy:adminId},
+    {
+       title:title,
+       description: description,
+       price:price,
+       imageUrl:imageUrl,
+    });
+    
+    res.json({
+        message:"course updated successfully"
+    })
+});
+
+router.put("/course/bulk", adminMiddle, async(req,res)=>{
+    const adminId=req.adminId;
+    let course=await courseModel.findOne({createdBy:adminId});
+    res.json({
+        message:"course bulk successfully"
+    });
 });
 
 module.exports = router;

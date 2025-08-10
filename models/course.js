@@ -14,9 +14,13 @@ const courseSchema=new mongoose.Schema({
         required: true
     },
 
+    imageUrl:{
+        type: String
+    },
+
     createdBy:{
          type: mongoose.Schema.ObjectId,
-         ref: admin
+         ref: "admin"
     }
 });
 

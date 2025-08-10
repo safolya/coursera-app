@@ -5,6 +5,7 @@ const mongo = require("../config/mongoose-connction");
 const router = express.Router({ mergeParams: true });
 const {z}= require("zod");
 const jwt=require("jsonwebtoken");
+require('dotenv').config();
 
 // SIGNUP ROUTES (Registration)
 router.get("/signup", (req, res) => {
@@ -77,7 +78,7 @@ router.post("/signin", async (req, res) => {
             //     }
             // });
 
-            const token = jwt.sign({email},"secret");
+            const token = jwt.sign({id:user._id},process.env.JWT_USER_SECRET);
             res.json({
                 token:token
             });

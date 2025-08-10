@@ -3,12 +3,12 @@ const mongoose=require("mongoose");
 const purchaseSchema=new mongoose.Schema({
     course:{
         type: mongoose.Types.ObjectId,
-        ref: course
+        ref: "course"
     },
     
     user:{
         type: mongoose.Types.ObjectId,
-        ref: user
+        ref: "user"
     }
 
 });
