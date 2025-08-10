@@ -2,12 +2,14 @@ const express= require("express");
 const mongo=require("./config/mongoose-connction")
 const userRouter=require("./routes/userRouter")
 const adminRouter=require("./routes/adminRouter")
+const courseRouter=require("./routes/courseRouter")
 const app = express();
 
 app.use(express.json());
 
 app.use("/user",userRouter);
 app.use("/admin",adminRouter);
+app.use("/course",courseRouter);
 
 // app.get("/",(req,res)=>{
 //     res.send("hello")

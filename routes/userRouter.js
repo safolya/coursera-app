@@ -1,10 +1,12 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const userSchema = require("../models/user");
+const purchaseSchema = require("../models/purchase");
 const mongo = require("../config/mongoose-connction");
 const router = express.Router({ mergeParams: true });
 const {z}= require("zod");
 const jwt=require("jsonwebtoken");
+const userMiddle = require("../middlewares/userMiddle");
 require('dotenv').config();
 
 // SIGNUP ROUTES (Registration)
@@ -98,9 +100,12 @@ router.post("/signin", async (req, res) => {
     }
 });
 
-router.get("/purchases",(req,res)=>{
+router.get("/purchases",userMiddle,async(req,res)=>{
+    const userId=req.userId;
+    const purchases=await purchaseSchema.find({user:userId})
+
     res.json({
-        message:"user purchase endpoint"
+        purchases
     })
 })
 

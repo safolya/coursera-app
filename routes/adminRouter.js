@@ -128,11 +128,11 @@ router.put("/course/edit", adminMiddle, async(req,res)=>{
     })
 });
 
-router.put("/course/bulk", adminMiddle, async(req,res)=>{
+router.get("/course/bulk", adminMiddle, async(req,res)=>{
     const adminId=req.adminId;
-    let course=await courseModel.findOne({createdBy:adminId});
+    let course=await courseModel.find({createdBy:adminId});
     res.json({
-        message:"course bulk successfully"
+        course
     });
 });
 
